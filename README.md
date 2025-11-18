@@ -8,4 +8,4 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-Made with ❤️ by Vanessa Ciretose
+Made with ❤️ by Vanessa
