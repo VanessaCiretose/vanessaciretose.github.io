@@ -11,6 +11,58 @@ import '../styles/global.css';
 		<title>Vanessa</title>
 	</head>
 	<body>
-		<center><h1>Vanessa</h1></center>
+		<div id="canvas-container"></div>
+		<script>
+			import * as THREE from 'three';
+
+			// Scene setup
+			const scene = new THREE.Scene();
+			const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+			const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			
+			const container = document.getElementById('canvas-container');
+			if (container) {
+				container.appendChild(renderer.domElement);
+			}
+
+			// Moon Geometry
+			const geometry = new THREE.SphereGeometry(2, 64, 64);
+			const textureLoader = new THREE.TextureLoader();
+			const texture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/moon_1024.jpg');
+			// Fallback color while loading or if fails
+			const material = new THREE.MeshStandardMaterial({ 
+				map: texture,
+				color: 0xffffff
+			});
+			const moon = new THREE.Mesh(geometry, material);
+			scene.add(moon);
+
+			// Lighting
+			const ambientLight = new THREE.AmbientLight(0x404040);
+			scene.add(ambientLight);
+
+			const directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+			directionalLight.position.set(5, 3, 5);
+			scene.add(directionalLight);
+
+			camera.position.z = 6;
+
+			// Animation
+			function animate() {
+				requestAnimationFrame(animate);
+				moon.rotation.y += 0.002;
+				moon.rotation.x += 0.0005;
+				renderer.render(scene, camera);
+			}
+			animate();
+
+			// Resize handling
+			window.addEventListener('resize', () => {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize(window.innerWidth, window.innerHeight);
+			});
+		</script>
 	</body>
 </html>
